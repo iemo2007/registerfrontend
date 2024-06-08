@@ -6,6 +6,10 @@
                 <h3> Let's get started and <span class="text-danger"> Register </span> </h3>
             </div>
 
+            <div class="mb-3">
+                <small class="text-danger"> {{this.errorMessage}} </small>
+            </div>
+            
             <div class="form-outline mb-4">
                 <label class="form-label" for="firstName">First name</label>
                 <input type="text" id="firstName" class="form-control" formControlName="firstName" />

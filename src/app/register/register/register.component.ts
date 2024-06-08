@@ -127,7 +127,7 @@ export class RegisterComponent {
       else if(inputControl?.hasError('ageInvalid'))
         errorMessage += `Only 20 years or older are allowed to register`;
       else if(inputControl?.hasError('invalidMobileNumber'))
-        errorMessage += `Invalid format. The format should be exactly like that: +201xxxxxxxxx`;
+        errorMessage += `Invalid format. You need to enter 9 digits`;
       else if(inputControl?.hasError('email'))
         errorMessage += `Inavalid E-mail format`;
     } 
