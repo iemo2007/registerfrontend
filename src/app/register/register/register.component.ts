@@ -2,6 +2,7 @@ import { Governate } from './../../models/governate.model';
 import { Component } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Account } from 'src/app/models/account.model';
 import { City } from 'src/app/models/city.model';
 import { LoaderService } from 'src/app/services/loader.service';
 import { RegisterService } from 'src/app/services/register.service';
@@ -17,7 +18,7 @@ import { mobileNumberValidator } from 'src/app/shared/validators/mobile-number.v
 export class RegisterComponent {
 
   isLoading:boolean = false;
-  
+
   constructor(private registerService: RegisterService, private fb: FormBuilder, private router: Router, private loaderService: LoaderService) {
 
   }
@@ -151,7 +152,9 @@ export class RegisterComponent {
 
   register() {
     this.errorMessage = "";
-    this.registerService.createAccount(this.registerForm.value)
+    let account: Account = this.registerForm.value;
+    account.mobileNumber = `+201${account.mobileNumber}`;
+    this.registerService.createAccount(account)
     .subscribe(
       (response) => {
         // Handle successful response

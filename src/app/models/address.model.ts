@@ -3,5 +3,5 @@ export interface Address {
     cityId: string;
     street: string;
     buildingNumber: string;
-    flatNumber: Date;
+    flatNumber: number;
 }

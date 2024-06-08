@@ -30,12 +30,16 @@
                 <small class="text-danger">{{this.getValidationErrors('birthDate', 'Birth Date')}}</small>
             </div>
 
-            <div class="form-outline mb-4">
-                <label class="form-label" for="mobileNumber">Mobile Number</label>
-                <input type="text" id="mobileNumber" class="form-control" formControlName="mobileNumber" placeholder="+201xxxxxxxxx"/>
-                <small class="text-danger">{{this.getValidationErrors('mobileNumber', 'Mobile Number')}}</small>
+            <label class="form-label" for="mobileNumber">Mobile Number</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">+201</span>
+                </div>
+                <input type="text" id="mobileNumber" class="form-control" formControlName="mobileNumber" />
+                
             </div>
-
+            <small class="text-danger">{{this.getValidationErrors('mobileNumber', 'Mobile Number')}}</small>
+            
             <div class="form-outline mb-4">
                 <label class="form-label" for="email">Email</label>
                 <input type="email" id="email" class="form-control" formControlName="email" placeholder="test@email.com"/>
