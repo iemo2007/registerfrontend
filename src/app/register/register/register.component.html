@@ -1,0 +1,127 @@
+<app-loader *ngIf="this.isLoading"></app-loader>
+<div class="d-flex justify-content-center" *ngIf="!this.isLoading">
+    <div class="col-6">
+        <form [formGroup]="registerForm" (ngSubmit)="register()">
+            <div class="text-center mb-4">
+                <h3> Let's get started and <span class="text-danger"> Register </span> </h3>
+            </div>
+
+            <div class="form-outline mb-4">
+                <label class="form-label" for="firstName">First name</label>
+                <input type="text" id="firstName" class="form-control" formControlName="firstName" />
+                <small class="text-danger">{{this.getValidationErrors('firstName', 'First Name')}}</small>
+            </div>
+
+            <div class="form-outline mb-4">
+                <label class="form-label" for="middleName">Middle name</label>
+                <input type="text" id="middleName" class="form-control" formControlName="middleName" />
+                <small class="text-danger">{{this.getValidationErrors('middleName', 'Middle Name')}}</small>
+            </div>
+
+            <div class="form-outline mb-4">
+                <label class="form-label" for="lastName">Last name</label>
+                <input type="text" id="lastName" class="form-control" formControlName="lastName" />
+                <small class="text-danger">{{this.getValidationErrors('lastName', 'Last Name')}}</small>
+            </div>
+
+            <div class="form-outline mb-4">
+                <label class="form-label" for="birthDate">Birth Date</label>
+                <input type="date" id="birthDate" class="form-control" formControlName="birthDate" />
+                <small class="text-danger">{{this.getValidationErrors('birthDate', 'Birth Date')}}</small>
+            </div>
+
+            <div class="form-outline mb-4">
+                <label class="form-label" for="mobileNumber">Mobile Number</label>
+                <input type="text" id="mobileNumber" class="form-control" formControlName="mobileNumber" placeholder="+201xxxxxxxxx"/>
+                <small class="text-danger">{{this.getValidationErrors('mobileNumber', 'Mobile Number')}}</small>
+            </div>
+
+            <div class="form-outline mb-4">
+                <label class="form-label" for="email">Email</label>
+                <input type="email" id="email" class="form-control" formControlName="email" placeholder="test@email.com"/>
+                <small class="text-danger">{{this.getValidationErrors('email', 'Email')}}</small>
+            </div>
+
+            <div class="form-group" formArrayName="addresses">
+            <div *ngFor="let address of this.getAddressControls(); let i = index" [formGroupName]="i" class="p-3 mb-3 address-group">
+                <h4> Address: </h4>
+                <div class="form-outline mb-4">
+                    <label class="form-label" for="governateId">Governate</label>
+                    <select type="text" id="governateId" class="form-control" formControlName="governateId" (change)="onOptionSelected($event, i)">
+                        <option value="" selected> --Select Governate </option>
+                        <option *ngFor="let gov of this.governates" [value]="gov.id"> {{gov.name}}</option>
+                    </select>
+                    <small class="text-danger">{{this.getRepeatedValidationErrors('governateId', 'Governate', i)}}</small>
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label class="form-label" for="cityId">City</label>
+                    <select type="text" id="cityId" class="form-control" formControlName="cityId">
+                        <option value="" selected> --Select City </option>
+                        <option *ngFor="let ci of this.governateCities[i]" [value]="ci.id"> {{ci.name}}</option>
+                    </select>
+                    <small class="text-danger">{{this.getRepeatedValidationErrors('cityId', 'City', i)}}</small>
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label class="form-label" for="street">street</label>
+                    <input type="text" id="street" class="form-control" formControlName="street"/>
+                    <small class="text-danger">{{this.getRepeatedValidationErrors('street', 'Street', i)}}</small>
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label class="form-label" for="buildingNumber">Building Number</label>
+                    <input type="text" id="buildingNumber" class="form-control" formControlName="buildingNumber"/>
+                    <small class="text-danger">{{this.getRepeatedValidationErrors('buildingNumber', 'Building Number', i)}}</small>
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label class="form-label" for="flatNumber">Flat Number</label>
+                    <input type="text" id="flatNumber" class="form-control" formControlName="flatNumber"/>
+                    <small class="text-danger">{{this.getRepeatedValidationErrors('flatNumber', 'Flat Number', i)}}</small>
+                </div>
+
+                <button type="button" (click)="this.removeAddress(i)" *ngIf="this.getAddressControls().length > 1" 
+                    class="btn btn-danger mt-3" title="Remove">-</button>
+            </div>
+            <button type="button" class="btn btn-success mt-3" (click)="this.addAddress()" title="Add">+</button>
+            </div>
+
+            <!-- <div class="form-outline mb-4">
+                <label class="form-label" for="lastname">Last name</label>
+                <input type="text" id="lastname" class="form-control" formControlName="lastname"/>
+                <span class="text-danger" *ngIf="this.registerForm.get('lastname')?.touched && this.registerForm.get('lastname')?.hasError('required')"> The last name is required </span>
+                <span class="text-danger" 
+                *ngIf="this.registerForm.get('lastname')?.touched && (this.registerForm.get('lastname')?.hasError('minlength') || this.registerForm.get('lastname')?.hasError('maxlength'))"
+                > Should be between 3 & 15 characters </span>
+            </div>
+            <div class="form-outline mb-4">
+              <label class="form-label" for="email">Email address</label>
+              <input type="email" id="email" class="form-control" formControlName="email"/>
+              <span class="text-danger" *ngIf="this.registerForm.get('email')?.touched && this.registerForm.get('email')?.hasError('required')"> Email is required </span>
+              <span class="text-danger" *ngIf="this.registerForm.get('email')?.touched && this.registerForm.get('email')?.hasError('pattern')"> Invalid email format </span>
+            </div>
+          
+            <div class="form-outline mb-4">
+              <label class="form-label" for="password">Password</label>
+              <input type="password" id="password" class="form-control" formControlName="password"/>
+              <span class="text-danger" *ngIf="this.registerForm.get('password')?.touched && this.registerForm.get('password')?.hasError('required')"> Password is required </span>
+              <span class="text-danger" 
+                *ngIf="this.registerForm.get('password')?.touched && (this.registerForm.get('password')?.hasError('minlength') || this.registerForm.get('password')?.hasError('maxlength'))"
+              > Should be between 3 & 15 characters </span>
+            </div> -->
+          
+            <!-- <app-validation-messages 
+              [errorMessages]="this.errorMessages"
+              *ngIf="this.errorMessages && this.errorMessages.length>0"
+            ></app-validation-messages>
+             -->
+
+            <div class="mb-3">
+                <small class="text-danger"> {{this.errorMessage}} </small>
+            </div>
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary btn-block mb-4" [disabled]="!this.registerForm.valid">Create Account</button>
+          </form>
+    </div>
+</div>
